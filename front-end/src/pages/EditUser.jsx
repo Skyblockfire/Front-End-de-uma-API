@@ -16,7 +16,7 @@ const EditUser = ({user}) => {
     const [Usuario, setUsuario] = useState("");
     const [Status, setStatus] = useState("");
     
-    if(user === ""|| user == null){
+    if(user !== undefined){
         setNome("");
         setCPF("");
         setRG("");
@@ -27,7 +27,8 @@ const EditUser = ({user}) => {
 
   return (
     <>
-    <form >
+    <form onSubmit={handleSubmit}>
+        <label>
         <span>Nome:</span>
              <input 
                 type="text" 
@@ -36,6 +37,10 @@ const EditUser = ({user}) => {
                 onChange={(e) => {setNome(e.target.value)}}
                 value={Nome}
             />
+            </label>
+
+            <br />
+
             <label>
             <span>CPF:</span>
                 <input
@@ -46,6 +51,9 @@ const EditUser = ({user}) => {
                     value={CPF}
                 />
             </label>
+
+            <br />
+
             <label>
             <span>RG:</span>
                 <input
@@ -56,6 +64,9 @@ const EditUser = ({user}) => {
                     value={RG}
                 />
             </label>
+
+            <br />
+
              <label>
              <span>Telefone:</span>
                 <input
@@ -66,6 +77,9 @@ const EditUser = ({user}) => {
                     value={Telefone}
                 />
             </label>
+
+            <br />
+
             <label >
                 <span>Usuario:</span>
                  <input
@@ -76,14 +90,20 @@ const EditUser = ({user}) => {
                     value={Usuario}
                 />
             </label>
+
+            <br />
+
             <label>
             <span>Situacao:</span>
              <select name="Status" onChange={(e) => {setStatus(e.target.value)}} value={Status}>
-                <option value="Ativo"></option>
-                <option value="Inativo"></option>
-                <option value="Pendente"></option>
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
+                <option value="Pendente">Pendente</option>
              </select>
             </label>
+
+            <br />
+
         <Button variant="primary" type="submit" onSubmit={handleSubmit}>
             Salvar
         </Button>

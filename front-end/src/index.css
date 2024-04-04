@@ -1,12 +1,29 @@
 body{
   padding: 0;
   margin: 0;
-  min-height: 100vh;
   display: flex;
+  min-height: 100vh;
   flex-direction: column;
 }
+html{
+  margin:0;
+  padding: 0;
+}
 footer{
-  position:absolute;
-  bottom:0;
+  bottom: 0;
   width: 100%;
+  unicode-bidi: isolate;
+}
+.teste{
+  padding: 70px;
+  padding-top: 0;
+}
+
+label.form-label{
+  left:1em;
+}
+
+span#Situacao{
+  text-align: left;
+  color: #707070;
 }

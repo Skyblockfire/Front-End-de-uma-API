@@ -9,7 +9,7 @@ const Navbars = () => {
       <>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container fluid>
-          <Navbar.Brand> <img id={styles.logo} src="/images/overdrive.png" alt="Logo overdrive" /> </Navbar.Brand>
+          <Navbar.Brand> <a href="http://localhost:3000"><img id={styles.logo} src="/images/overdrive.png" alt="Logo overdrive"/></a> </Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/Company">Company</Nav.Link>
             <Nav.Link href="/User">User</Nav.Link>

@@ -1,9 +1,11 @@
 import React from 'react'
+import Button from 'react-bootstrap/Button';
 
 const Home = () => {
   return (
     <>
-        <h1>Teste</h1>
+        <Button variant="outline-secondary" href='./Company'>Empresas</Button>
+        <Button variant="outline-secondary" href='./User'>Usuários</Button>
     </>
   )
 }

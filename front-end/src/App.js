@@ -10,6 +10,8 @@ import './App.css';
 import Home from "./pages/Home";
 import Company from "./pages/Company";
 import User from "./pages/User";
+import EditCompany from "./pages/EditCompany";
+import EditUser from './pages/EditUser';
 
 function App() {
   return (
@@ -21,7 +23,9 @@ function App() {
               <Route path="/" element={<Home/>}/>
               <Route path="/Home" element={<Home/>}/>
               <Route path="/Company" element={<Company/>}/>
+              <Route path="/Company/Edit" element={<EditCompany/>}/>
               <Route path="/User" element={<User/>}/>
+              <Route path="/User/Edit" element={<EditUser/>}/>
             </Routes>
           </BrowserRouter> 
           <Footer />
