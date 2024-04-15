@@ -46,3 +46,17 @@ input::-webkit-inner-spin-button {
 .body{
   min-height: 89.9vh;
 }
+
+label.form-label{
+  left:1em;
+}
+
+a{
+  text-decoration: none;
+  color: #AAAAAA;
+}
+
+.table tr th{
+  color: white;
+  background-color: #252525;
+}

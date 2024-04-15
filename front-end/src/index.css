@@ -19,11 +19,19 @@ footer{
   padding-top: 0;
 }
 
-label.form-label{
-  left:1em;
-}
-
 span#Situacao{
   text-align: left;
   color: #707070;
+}
+
+.tabela{
+  padding: 10px;
+}
+
+.espaco{
+  margin:5px;
+}
+
+.busca{
+  border-radius:6px;
 }

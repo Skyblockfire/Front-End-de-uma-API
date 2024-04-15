@@ -2,6 +2,7 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import { IMaskInput } from 'react-imask';
 import validarCpf from 'validar-cpf'
+import { Link } from 'react-router-dom';
 //import { useState } from "react";
 //Eu amo coding.
 const EditUser = ({user}) => {
@@ -48,7 +49,7 @@ const EditUser = ({user}) => {
                     type="text" 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='Insira o nome de Usuário'
+                    defaultValue='Darthe'
                     onClick={(e)=>{e.target.value=""}}
                     />
                     <label className='form-label'>Usuário</label>
@@ -58,7 +59,7 @@ const EditUser = ({user}) => {
                     type="text" 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='Insira o seu Nome' 
+                    defaultValue='Franz' 
                     onClick={(e)=>{e.target.value=""}}
                     />
                     <label className='form-label'>Nome</label>
@@ -69,7 +70,7 @@ const EditUser = ({user}) => {
                      mask='000.000.000-00'
                      required 
                      onClick={(e)=>{e.target.value=""}}
-                     defaultValue='000.000.000-00'
+                     defaultValue='795.003.930-26'
                      id='CPF'
                      onKeyUp={ValidarCPF}
                      />
@@ -79,7 +80,7 @@ const EditUser = ({user}) => {
                     <IMaskInput 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='(00) 0000-0000'
+                    defaultValue='(19) 1523-4231'
                     mask='(00) 0000-0000'
                     onKeyUp={handlePhone} 
                     onClick={(e)=>{e.target.value=""}}
@@ -104,12 +105,13 @@ const EditUser = ({user}) => {
             </div>
                 <br />
 
-        <Button variant="outline-dark" type="submit" onSubmit={handleSubmit}>
+        <Link to={`http://localhost:3000/User`} className='espaco'><Button variant="outline-dark" className='espaco'>
             Salvar
         </Button>
-        {/*<Button variant="outline-dark">
+        </Link>
+        <Button variant="outline-dark">
             Excluir
-        </Button>*/}
+        </Button>
         </form>
         </div>
         {/*
