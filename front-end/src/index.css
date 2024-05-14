@@ -14,7 +14,7 @@ footer{
   width: 100%;
   unicode-bidi: isolate;
 }
-.teste{
+div.teste{
   padding: 70px;
   padding-top: 0;
 }
@@ -24,12 +24,21 @@ span#Situacao{
   color: #707070;
 }
 
+.plano-de-fundo{
+  background-image: url(../src/images/BackGroundImage.png);
+}
+
 .tabela{
   padding: 10px;
 }
 
 .espaco{
   margin:5px;
+}
+
+.espaco-home{
+  margin:5px;
+  margin-right: 500px;
 }
 
 .busca{

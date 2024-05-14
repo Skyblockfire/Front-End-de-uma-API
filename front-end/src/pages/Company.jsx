@@ -24,8 +24,8 @@ const Company = () => {
       accessorKey: "id",
     },
     {
-      header: "Nome Fantasia",
-      accessorKey: "Nome fantasia",
+      header: "nome",
+      accessorKey: "nome",
     },
     {
       header: "CNPJ",
@@ -41,7 +41,7 @@ const Company = () => {
     },
     {
       header: "Status",
-      accessorKey: "Status",
+      accessorKey: "status",
     },
     {
       header: 'Ações',
@@ -73,17 +73,21 @@ const Company = () => {
   });
 
   return (
-    <div className='body'>
-        <h1>Empresas</h1>
+    <div className='body plano-de-fundo'>
+        <h1 className='titulo'>Empresas</h1>
         
        <input
-          className="busca"
+          className="busca distancia"
           type="text"
           value={filtering}
           onChange={(e) => setFiltering(e.target.value)}
           placeholder="Busca"
+          
         />
-        <div className='tabela'>
+        <Link to={`http://localhost:3000/Company/Edit`}><Button variant="light" className='botao'>
+            Criar
+        </Button></Link>
+        <div className='tabela tabela-comp'>
         <table className="table table-hover table-bordered">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -103,9 +107,16 @@ const Company = () => {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td className="w-auto h-auto p-2" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
+                  <td
+                  data-th={cell.column.id}
+                  className="w-auto h-auto p-2"
+                  key={cell.id}
+                >
+                  {flexRender(
+                    cell.column.columnDef.cell,
+                    cell.getContext()
+                  )}
+                </td>
                 ))}
               </tr>
             ))}
@@ -113,8 +124,8 @@ const Company = () => {
         </table>
         </div>  
         <Container>
-        <Button className='espaco' variant="outline-dark" onClick={() => table.previousPage()}>Anterior</Button>
-        <Button className='espaco' variant="outline-dark" onClick={() => table.nextPage()}>Próxima</Button>
+        <Button className='espaco' variant="light" onClick={() => table.previousPage()}>Anterior</Button>
+        <Button className='espaco sumir' variant="light" disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>Próxima</Button>
        </Container>
         
     </div>

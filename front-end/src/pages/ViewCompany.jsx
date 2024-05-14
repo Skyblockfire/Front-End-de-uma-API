@@ -93,11 +93,11 @@ const EditCompany = ({company}) => {
         <form onSubmit={handleSubmit}>
             <div className='row mb-3'>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' defaultValue={"Tasia Seguros"} disabled required />
+                    <input type="text" className='form-control shadow-none' defaultValue={"Overdrive Software e Consultoria"} disabled required />
                     <label className='form-label'>Razão Social</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' defaultValue={"Tasia"} disabled required />
+                    <input type="text" className='form-control shadow-none' defaultValue={"Overdrive"} disabled required />
                     <label className='form-label'>Nome Fantasia</label>
                 </div>
                 <div className='col-12 col-sm-6 mb-3 form-floating'>
@@ -121,17 +121,17 @@ const EditCompany = ({company}) => {
                     <label className="form-label">Data de abertura da empresa:</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' defaultValue={"Funcional"} disabled required />
+                    <input type="text" className='form-control shadow-none' defaultValue={"Sociedade Simples Limitada"} disabled required />
                     <label className='form-label'>Natureza Juridica</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' defaultValue={"A todo vapor!"} disabled required />
+                    <input type="text" className='form-control shadow-none' defaultValue={'1342-1'} disabled required />
                     <label className='form-label'>Atividade Econômica</label>
                 </div>
                 <div className='mb-3 form-floating'>
                 <IMaskInput
                 mask="00000-000"
-                defaultValue={13607384}
+                defaultValue={'35902-031'}
                 type="text"
                 className="form-control shadow-none"
                 id="cep"
@@ -147,7 +147,7 @@ const EditCompany = ({company}) => {
                     <select
                     {...register("Estado")}
                      className="form-select shadow-none"
-                     defaultValue="SP"
+                     defaultValue="MG"
                      name='Estado'
                      disabled
                      required
@@ -185,11 +185,11 @@ const EditCompany = ({company}) => {
                     </select>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
-                    <input {...register("Cidade")} type='text' className="form-control" name='Cidade' defaultValue={"Araras"} required disabled/>
+                    <input {...register("Cidade")} type='text' className="form-control" name='Cidade' defaultValue={'Itabira'} required disabled/>
                     <label className="form-label">Cidade</label>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
-                    <input {...register("Bairro")} type='text' className="form-control" name='Bairro' defaultValue={"Jardim Mexirica"} required disabled />
+                    <input {...register("Bairro")} type='text' className="form-control" name='Bairro' defaultValue={'Gabiroba'} required disabled />
                     <label className="form-label">Bairro</label>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
@@ -197,7 +197,7 @@ const EditCompany = ({company}) => {
                     <label className="form-label">Complemento (Opcional)</label>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
-                    <input {...register("Rua")} type='text' className="form-control" name='Rua'defaultValue={"Rua das abóboras"} required disabled />
+                    <input {...register("Rua")} type='text' className="form-control" name='Rua'defaultValue={'Rua dos Locutores'} required disabled />
                     <label className="form-label" htmlFor='Rua'>Rua</label>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
@@ -217,7 +217,7 @@ const EditCompany = ({company}) => {
                     <label className='form-label'>Telefone</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <IMaskInput onInput={mascaraMoeda} className='form-control shadow-none' name='Capital' defaultValue={1} disabled required />
+                    <IMaskInput onInput={mascaraMoeda} className='form-control shadow-none' name='Capital' defaultValue={'R$ 4.000.000,00'} disabled required />
                     <label className='form-label'>Capital</label>
                 </div>
                 <span id='Situacao'>Situação Cadastral</span>

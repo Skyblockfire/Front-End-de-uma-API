@@ -54,9 +54,77 @@ label.form-label{
 a{
   text-decoration: none;
   color: #AAAAAA;
+  margin: 0;
 }
 
 .table tr th{
   color: white;
-  background-color: #252525;
+  background-color: #212529;
+}
+
+.botao{
+  height:30px;
+  margin-Bottom:5px;
+  text-Align:'center';
+  place-Items:'center';
+  justify-Content:'center';
+  padding-Bottom:6px;
+  padding-Top:2px
+}
+
+.home{
+  margin: auto;
+  place-content: center;
+}
+
+.Image{
+  width: 500px;
+  height: 500px;
+  margin-right: 50px;
+  border-radius: 2px;
+}
+
+@media (max-width: 800px) {
+  .tabela-user {
+
+    thead{
+      display: none;
+    }
+    td {
+      display: block;
+    }
+    td::before {
+      content: attr(data-th) ": ";
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .tabela-comp {
+    thead {
+      display: none;
+    }
+    td {
+      display: block;
+    }
+    td::before {
+      content: attr(data-th) ": ";
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+  }
+}
+
+.sumir:disabled{
+  display: none;
+}
+
+.titulo{
+  color: white;
+}
+
+.distancia{
+  margin-right: 30px;
 }

@@ -4,13 +4,19 @@ import Button from 'react-bootstrap/Button';
 //import { useState } from "react";
 import { IMaskInput } from 'react-imask';
 import ValidarCnpj from '../hooks/ValidarCnpj';
-
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const EditCompany = ({company}) => {
     const { register,setValue } = useForm();
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log("Enviando formulário");
+        Swal.fire({
+            icon: "success",
+            title: "A empresa foi criada!"
+        })
+        navigate("../Company");
     }
     const handlePhone = (e) => {
         let input = e.target;
@@ -42,6 +48,46 @@ const EditCompany = ({company}) => {
           }
         }
     }
+    const navigate = useNavigate();
+
+    /*  const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success espaco",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+
+      const handleDelete = (e) =>{
+        swalWithBootstrapButtons.fire({
+            title: "Tem certeza?",
+            text: "Essa ação pode ser irreversível!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim!",
+            cancelButtonText: "Não!",
+            reverseButtons: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                title: "Deletado!",
+                text: "Esta Empresa foi deletada.",
+                icon: "success"
+              })
+              navigate(`../Company`);
+              
+
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire({
+                title: "Cancelado",
+                text: "Esta Empresa não foi deletado",
+                icon: "warning"
+              });
+            }
+          });
+      }*/
     const VerificaCEP = (e) => {
         
         const cep = e.target.value.replace(/\D/g, '');
@@ -89,15 +135,15 @@ const EditCompany = ({company}) => {
     
     <>
         <h1>Informações Cadastrais:</h1>
-        <div id="order-form-container" className="my-md-4 px-md-0 " class="teste">
+        <div id="order-form-container" className="my-md-4 px-md-0" class='teste' >
         <form onSubmit={handleSubmit}>
             <div className='row mb-3'>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' required />
+                    <input type="text" className='form-control shadow-none' required minLength={5} maxLength={255}/>
                     <label className='form-label'>Razão Social</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' required />
+                    <input type="text" className='form-control shadow-none' required minLength={5} maxLength={45}/>
                     <label className='form-label'>Nome Fantasia</label>
                 </div>
                 <div className='col-12 col-sm-6 mb-3 form-floating'>
@@ -117,11 +163,15 @@ const EditCompany = ({company}) => {
                     <label className="form-label">Data de abertura da empresa:</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' required />
+                    <input type="text" className='form-control shadow-none' required maxLength={50}/>
                     <label className='form-label'>Natureza Juridica</label>
                  </div>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' required />
+                    <IMaskInput 
+                    mask='0000-0'
+                    type="text" 
+                    className='form-control shadow-none' 
+                    required />
                     <label className='form-label'>Atividade Econômica</label>
                 </div>
                 <div className='mb-3 form-floating'>
@@ -191,7 +241,7 @@ const EditCompany = ({company}) => {
                     <label className="form-label">Complemento (Opcional)</label>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
-                    <input {...register("Rua")} type='text' className="form-control" name='Rua'  required disabled />
+                    <input {...register("Rua")} type='text' className="form-control" name='Rua' required disabled />
                     <label className="form-label" htmlFor='Rua'>Rua</label>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
@@ -229,7 +279,7 @@ const EditCompany = ({company}) => {
         <Button variant="outline-dark" className='espaco' type="submit">
             Salvar
         </Button>
-        {/*<Button variant="outline-dark">
+        {/*<Button variant="outline-dark" onClick={handleDelete}>
             Excluir
         </Button>*/}
         </form>
