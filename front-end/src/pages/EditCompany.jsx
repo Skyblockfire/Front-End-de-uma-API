@@ -1,23 +1,76 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import Button from 'react-bootstrap/Button';
-//import { useState } from "react";
 import { IMaskInput } from 'react-imask';
 import ValidarCnpj from '../hooks/ValidarCnpj';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import CompanyService from '../services/CompanyService';
+import { useState, useEffect } from "react";
+//TODO: Fazer validações com yup resolver
+//TODO: Refazer as máscaras (Não utilizar de IMASK pois buga os registros no register, faze-los manualmente)
 
-const EditCompany = ({company}) => {
-    const { register,setValue } = useForm();
-    const handleSubmit = (event) => {
-        event.preventDefault();
+const CreateCompany = () => {
+    const [company, setCompany] = useState([]);
+
+    const { id } = useParams();
+
+    const { register,setValue, handleSubmit } = useForm();
+    
+useEffect(() => {
+  if(id){
+    CompanyService.listarPorId(id)
+      .then((response) => {
+        const companyData = response.data
+        
+        const dataCadastro = new Date(companyData.dataCadastro)
+        if(!isNaN(dataCadastro)){
+          const formattedDate = dataCadastro.toISOString.split("T")[0];
+          setValue("dataCadastro", formattedDate)
+        } else {
+          console.error(
+            "Invalid date format received:",
+            companyData.dataCadastro
+          )
+        }
+        setCompany(response.data);
+
+        setValue("razaoSocial", companyData.razaoSocial)
+      })
+  }
+}, [id, setCompany])
+
+    const onSubmit = async (data) => {
+      console.log("Dados do formulário:", data);
+        console.log(data.dataAbertura)
+        data.cnpj = data.cnpj.replace(/\D/g, "");
+        data.cep = data.cep.replace(/\D/g, "");
+        data.status = parseInt(data.status);
+        data.capital = data.capital.replace(/\D/g, "");
+        if(data.dataAbertura == ""){
+          data.dataAbertura = null;
+        }
+        let dt = new Date(data.dataAbertura)
+        dt = dt.toISOString();
+        data.dataAbertura = dt;
         console.log("Enviando formulário");
+        try{
+          await CompanyService.salvar(data);
         Swal.fire({
             icon: "success",
-            title: "A empresa foi criada!"
+            title: "A empresa foi cadastrada!"
         })
         navigate("../Company");
-    }
+        } catch (error) {
+          const errorMessage =
+          error.message || "Erro insperado durante a criação da empresa, tente novamente mais tarde";
+          Swal.fire({
+            title: "Erro",
+            html: errorMessage,
+            icon: "error",
+          });
+        }
+    };
     const handlePhone = (e) => {
         let input = e.target;
         input.value = phoneMask(input.value);
@@ -50,7 +103,7 @@ const EditCompany = ({company}) => {
     }
     const navigate = useNavigate();
 
-    /*  const swalWithBootstrapButtons = Swal.mixin({
+      const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
           confirmButton: "btn btn-success espaco",
           cancelButton: "btn btn-danger"
@@ -77,17 +130,9 @@ const EditCompany = ({company}) => {
               navigate(`../Company`);
               
 
-            } else if (
-              result.dismiss === Swal.DismissReason.cancel
-            ) {
-              swalWithBootstrapButtons.fire({
-                title: "Cancelado",
-                text: "Esta Empresa não foi deletado",
-                icon: "warning"
-              });
-            }
+            } 
           });
-      }*/
+      }
     const VerificaCEP = (e) => {
         
         const cep = e.target.value.replace(/\D/g, '');
@@ -108,8 +153,7 @@ const EditCompany = ({company}) => {
               setValue('Bairro', data.bairro);
               setValue('Cidade', data.localidade);
               setValue('Estado', data.uf);
-            }
-              
+            } 
           });
         }
       }
@@ -135,48 +179,52 @@ const EditCompany = ({company}) => {
     
     <>
         <h1>Informações Cadastrais:</h1>
-        <div id="order-form-container" className="my-md-4 px-md-0" class='teste' >
-        <form onSubmit={handleSubmit}>
+        <div id="order-form-container" className="my-md-4 px-md-0 " class="teste">
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className='row mb-3'>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' required minLength={5} maxLength={255}/>
+                    <input type="text" className='form-control shadow-none' required minLength={5} maxLength={255} {...register("razaoSocial")} />
                     <label className='form-label'>Razão Social</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' required minLength={5} maxLength={45}/>
+                    <input type="text" className='form-control shadow-none' required minLength={5} maxLength={45} {...register("nomeFantasia")}/>
                     <label className='form-label'>Nome Fantasia</label>
                 </div>
                 <div className='col-12 col-sm-6 mb-3 form-floating'>
-                    <IMaskInput
-                    mask="00.000.000/0000-00"
+                    <input
                     id='cnpj'
                     className='form-control shadow-none' 
                     onKeyUp={ValidarCNPJ}
-                    required />
-                    <label className='form-label'  htmlFor="cnpj">CNPJ</label>
+                    required 
+                    {...register("cnpj")}
+                    />
+                    <label className='form-label' htmlFor="cnpj">CNPJ</label>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
-                    <IMaskInput
+                    <input
                     type='date'
                     className="form-control" 
-                    required />
+                    required
+                    {...register("dataAbertura")}
+                    />
+                    
                     <label className="form-label">Data de abertura da empresa:</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <input type="text" className='form-control shadow-none' required maxLength={50}/>
+                    <input type="text" className='form-control shadow-none' required maxLength={50} {...register("naturezaJuridica")} />
                     <label className='form-label'>Natureza Juridica</label>
                  </div>
                 <div className='mb-3 form-floating'>
-                    <IMaskInput 
-                    mask='0000-0'
+                <input
                     type="text" 
                     className='form-control shadow-none' 
-                    required />
+                    required 
+                    {...register("cnae")}
+                    />
                     <label className='form-label'>Atividade Econômica</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                <IMaskInput
-                mask="00000-000"
+                <input
                 type="text"
                 className="form-control shadow-none"
                 id="cep"
@@ -184,6 +232,7 @@ const EditCompany = ({company}) => {
                 placeholder="CEP"
                 required
                 onKeyUp={VerificaCEP}
+                {...register("cep")}
             />
                     <label className='form-label cep'>CEP</label>
                 </div>
@@ -191,7 +240,6 @@ const EditCompany = ({company}) => {
                     <select
                     {...register("Estado")}
                      className="form-select shadow-none"
-                     defaultValue="Estado"
                      name='Estado'
                      disabled
                      required
@@ -245,43 +293,37 @@ const EditCompany = ({company}) => {
                     <label className="form-label" htmlFor='Rua'>Rua</label>
                 </div>
                 <div className="col-12 col-sm-6 mb-3 form-floating">
-                    <input type='number' className="form-control" name='Numero' required />
+                    <input type='number' className="form-control" name='Numero' {...register("numero")} required />
                     <label className="form-label">Número</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <IMaskInput 
+                    <input 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='(00) 0000-0000'
-                    mask='(00) 0000-0000'
                     onKeyUp={handlePhone} 
                     onClick={(e)=>{e.target.value=""}}
+                    {...register("telefone")}
                     />
                     <label className='form-label'>Telefone</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <IMaskInput onInput={mascaraMoeda} className='form-control shadow-none' name='Capital' required />
+                    <input onInput={mascaraMoeda} className='form-control shadow-none' name='Capital' {...register("capital")} required />
                     <label className='form-label'>Capital</label>
                 </div>
                 <span id='Situacao'>Situação Cadastral</span>
                 <div className='mb-3'>
-                <select className="form-select shadow-none" defaultValue="1" required>
+                <select className="form-select shadow-none" required {...register("status")}> 
+                   <option value="0">Inativo</option>
                     <option value="1">Ativo</option>
-                    <option value="2">Inativo</option>
-                    <option value="3">Pendente</option>
+                    <option value="2">Pendente</option>
                 </select>
                 </div>
-
             </div>
-            
             <br />
 
         <Button variant="outline-dark" className='espaco' type="submit">
-            Salvar
+            Enviar 
         </Button>
-        {/*<Button variant="outline-dark" onClick={handleDelete}>
-            Excluir
-        </Button>*/}
         </form>
         </div>
     </>
@@ -290,4 +332,4 @@ const EditCompany = ({company}) => {
 
 }
 
-export default EditCompany
+export default CreateCompany

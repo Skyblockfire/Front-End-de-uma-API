@@ -14,8 +14,8 @@ import EditCompany from "./pages/EditCompany";
 import EditUser from './pages/EditUser';
 import ViewCompany from './pages/ViewCompany'
 import ViewUser from './pages/ViewUser'
-import ExampleCompany from './pages/ExampleCompany';
-import ExampleUser from './pages/ExampleUser';
+import CreateCompany from './pages/CreateCompany';
+import CreateUser from './pages/CreateUser';
 
 function App() {
   return (
@@ -27,13 +27,13 @@ function App() {
               <Route path="/" element={<Home/>}/>
               <Route path="/Home" element={<Home/>}/>
               <Route path="/Company" element={<Company/>}/>
-              <Route path="/Company/Edit" element={<EditCompany/>}/>
-              <Route path="/Company/View/1" element={<ViewCompany/>}/>
-              <Route path="/Company/Edit/1" element={<ExampleCompany/>}/>
+              <Route path="/Company/Edit/:id" element={<EditCompany/>}/>
+              <Route path="/Company/View" element={<ViewCompany/>}/>
+              <Route path="/Company/Create" element={<CreateCompany/>}/>
               <Route path="/User" element={<User/>}/>
-              <Route path="/User/Edit" element={<EditUser/>}/>
-              <Route path="/User/View/1" element={<ViewUser/>}/>
-              <Route path="/User/Edit/1" element={<ExampleUser/>}/>
+              <Route path="/User/Edit/:id" element={<EditUser/>}/>
+              <Route path="/User/View" element={<ViewUser/>}/>
+              <Route path="/User/Create" element={<CreateUser/>}/>
             </Routes>
           </BrowserRouter> 
           <Footer />

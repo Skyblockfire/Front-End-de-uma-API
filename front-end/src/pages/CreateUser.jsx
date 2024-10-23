@@ -6,28 +6,39 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import data from '../data/MOCK_DATA.json'
-//import { useState } from "react";
-//Eu amo coding.
-const EditUser = ({user}) => {
+import UserService from '../services/UserService';
+//TODO: Refazer as máscaras (Não utilizar de IMASK pois buga os registros no register, faze-los manualmente)
+//TODO: Fazer validações com yup resolver
+const CreateUser = () => {
   const [empresas, setEmpresas] = useState([]);
-  
-  useEffect(() => {
-    setEmpresas(data);
-  }, []);
-  
-  const { register, watch } = useForm();
 
+  const { register , handleSubmit } = useForm();
 
-    const handleSubmit = (event) => {
-        event.preventDefault()
+    const onSubmit = async (data) => {
+      console.log(data)
+        data.CPF = data.CPF.replace(/\D/g, "");
+        data.EmpresaId = null;
+        data.status = parseInt(data.status);
+
+        try{
+          await UserService.salvar(data)
+
         Swal.fire({
             icon: "success",
-            title: "O usuário foi editado!"
+            title: "O usuário foi cadastrado!"
         })
         navigate("../User");
         console.log("Enviando formulário")
+    } catch(error){
+      const errorMessage =
+        error.message || "Erro inesperado ao cadastrar o usuário.";
+      Swal.fire({
+        title: "Erro",
+        html: errorMessage,
+        icon: "error",
+      });
     }
+  };
         const ValidarCPF = (e) => {
           const cpf = e.target.value.replace(/\D/g, '');
           if (cpf.length === 11) {
@@ -44,36 +55,7 @@ const EditUser = ({user}) => {
       }
       const navigate = useNavigate();
 
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-success espaco",
-          cancelButton: "btn btn-danger"
-        },
-        buttonsStyling: false
-      });
-    
-      const handleDelete = (e) =>{
-        swalWithBootstrapButtons.fire({
-            title: "Tem certeza?",
-            text: "Essa ação pode ser irreversível!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Sim",
-            cancelButtonText: "Não",
-            reverseButtons: false
-          }).then((result) => {
-            if (result.isConfirmed) {
-                
-                swalWithBootstrapButtons.fire({
-                title: "Deletado!",
-                text: "Este usuário foi deletado.",
-                icon: "success"
-              })
-              navigate(`../User`);
-            
-            } 
-          });
-      }
+      
       const handlePhone = (e) => {
         let input = e.target;
         input.value = phoneMask(input.value);
@@ -91,14 +73,14 @@ const EditUser = ({user}) => {
     <div class="body">
         <h1>Informações Cadastrais:</h1>
         <div id="order-form-container" className="my-md-4 px-md-0 " class="teste">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className='row mb-3'>
                 <div className='mb-3 form-floating'>
                     <input 
                     type="text" 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='Darthe'
+                    {...register("UserName")}
                     />
                     <label className='form-label'>Usuário</label>
                 </div>
@@ -107,79 +89,48 @@ const EditUser = ({user}) => {
                     type="text" 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='Franz' 
+                    {...register("Nome")}
                     />
                     <label className='form-label'>Nome</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <IMaskInput
+                    <input
                      className='form-control shadow-none'
                      mask='000.000.000-00'
                      required 
-                     defaultValue='795.003.930-26'
                      id='CPF'
                      onKeyUp={ValidarCPF}
+                     {...register("CPF")}
                      />
                     <label className='form-label'>CPF</label>
                 </div>
                 <div className='mb-3 form-floating'>
-                    <IMaskInput 
+                    <input 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='(19) 1523-4231'
-                    mask='(00) 0000-0000'
-                    onKeyUp={handlePhone} 
+                    onKeyUp={handlePhone}
+                    {...register("Telefone")} 
                     />
                     <label className='form-label'>Telefone</label>
                 </div>
                 <span id='Situacao'>Situação Cadastral</span>
                 <div className='mb-3'>
                 <select className="form-select shadow-none" aria-label="Default select example" {...register("status")}>
-                <option value="1">Ativo</option>
-                <option value="2">Inativo</option>
-                <option value="3">Pendente</option>
+                <option value="2">Pendente</option>
                 </select>
                 </div>
                 
-                {watch("status") === "1" && (
-                   <span id='Situacao'>Empresa
-                <div className='mb-3'>
-                <select className="form-select shadow-none" aria-label="Default select example" {...register("empresaId")}>
-                {empresas.map((empresa) => (
-                <option key={empresa.id} value={empresa.id}>
-                {empresa.nome}
-                </option>
-                ))}
-              </select>
-              </div>
-              </span>
-          )}
                 </div>
                 <br />
 
         <Button variant="outline-dark" className='espaco' type='submit' onSubmit={handleSubmit}>
-            Salvar
-        </Button>
-        
-        <Button variant="outline-dark" onClick={handleDelete}>
-            Excluir
+            Enviar
         </Button>
         </form>
-        </div>
-        {/*
-        Se sobrar tempo fazer:
-
-        <div className='mb-3 form-floating'>
-                    <input type="number" 
-                    className='form-control shadow-none' 
-                    required />
-                    <label className='form-label'>RG</label>
-                </div>
-        */}
-    
+        </div>    
     </div>
  
  )
 }
 
-export default EditUser
+export default CreateUser

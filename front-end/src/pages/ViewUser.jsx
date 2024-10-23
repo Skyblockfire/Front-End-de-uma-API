@@ -3,8 +3,6 @@ import Button from 'react-bootstrap/Button';
 import { IMaskInput } from 'react-imask';
 import validarCpf from 'validar-cpf'
 import { Link } from 'react-router-dom';
-//import { useState } from "react";
-//Eu amo coding.
 const EditUser = ({user}) => {
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -49,7 +47,6 @@ const EditUser = ({user}) => {
                     type="text" 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='Darthe'
                     disabled
                     onClick={(e)=>{e.target.value=""}}
                     />
@@ -60,7 +57,6 @@ const EditUser = ({user}) => {
                     type="text" 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='Franz' 
                     disabled
                     onClick={(e)=>{e.target.value=""}}
                     />
@@ -72,7 +68,6 @@ const EditUser = ({user}) => {
                      mask='000.000.000-00'
                      required 
                      onClick={(e)=>{e.target.value=""}}
-                     defaultValue='795.003.930-26'
                      id='CPF'
                      onKeyUp={ValidarCPF}
                      disabled
@@ -83,7 +78,6 @@ const EditUser = ({user}) => {
                     <IMaskInput 
                     className='form-control shadow-none' 
                     required
-                    defaultValue='(19) 1523-4231'
                     mask='(00) 0000-0000'
                     onKeyUp={handlePhone} 
                     onClick={(e)=>{e.target.value=""}}
@@ -113,26 +107,12 @@ const EditUser = ({user}) => {
             Voltar
         </Button>
         </Link>
-         <Link to={`http://localhost:3000/User/Edit/1`}><Button variant="outline-dark">
+         <Link to={`http://localhost:3000/User/Edit`}><Button variant="outline-dark">
             Editar
         </Button>
         </Link>
         </form>
         </div>
-        {/*
-        Se sobrar tempo fazer:
-
-        <div className='mb-3 form-floating'>
-                    <input type="number" 
-                    className='form-control shadow-none' 
-                    required />
-                    <label className='form-label'>RG</label>
-                </div>
-
-
-
-        */}
-    
     </div>
  
  )

@@ -1,9 +1,9 @@
 import React from 'react'
-import dados from '../data/MOCK_DATA.json';
 import Button from 'react-bootstrap/Button';
 import {Link} from 'react-router-dom'
 import Container from 'react-bootstrap/Container';
-
+import CompanyService from '../services/CompanyService';
+import Swal from 'sweetalert2';
 import {
   flexRender,
   getCoreRowModel,
@@ -12,24 +12,41 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
   
 const Company = () => {
-  const data = useMemo(() => dados, []);
+  const [companies, setCompanies] = useState([]);
 
-  const columns = [
+  useEffect(() =>{
+    CompanyService.listarTabela()
+      .then((response) => {
+        console.log(response)
+        setCompanies(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar empresas:", error);
+        Swal.fire({
+          title: "Erro",
+          text: "Não conseguimos encontrar os dado das empresas.",
+          icon: "error",
+        }); 
+      });
+  }, []);
+
+  const columns = useMemo(
+    () => [
     {
       header: "ID",
       accessorKey: "id",
     },
     {
-      header: "nome",
-      accessorKey: "nome",
+      header: "Nome Fantasia",
+      accessorKey: "nomeFantasia",
     },
     {
       header: "CNPJ",
-      accessorKey: "CNPJ",
+      accessorKey: "cnpj",
     },
     {
       header: "Telefone",
@@ -45,22 +62,24 @@ const Company = () => {
     },
     {
       header: 'Ações',
-      cell: (
+      cell: ({ row }) => (
         <div>
-            <Link to={`http://localhost:3000/Company/View/1`}>
+            {/*<Link to={`http://localhost:3000/Company/View`}>
               <Button className='espaco' variant="outline-dark">Visualizar</Button>
-            </Link>
-            <Link to={`http://localhost:3000/Company/Edit/1`}>
+            </Link>*/}
+            <Link to={`http://localhost:3000/Company/Edit/${row.original.id}`}>
               <Button variant="outline-dark">Editar</Button>
             </Link>
         </div>
       ),
     },
-  ]
+  ],
+  []
+);
   const [filtering, setFiltering] = useState("");
 
    const table = useReactTable({
-    data,
+    data: companies,
     columns,
     getCoreRowModel: getCoreRowModel(),
     columnResizeMode: "onChange",
@@ -84,7 +103,7 @@ const Company = () => {
           placeholder="Busca"
           
         />
-        <Link to={`http://localhost:3000/Company/Edit`}><Button variant="light" className='botao'>
+        <Link to={`http://localhost:3000/Company/Create`}><Button variant="light" className='botao'>
             Criar
         </Button></Link>
         <div className='tabela tabela-comp'>
